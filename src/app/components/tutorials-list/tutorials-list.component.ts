@@ -16,10 +16,23 @@ export class TutorialsListComponent implements OnInit {
   chosenUsername='';
   showpopup: boolean;
   chosenRole=0;
+  toasterMessage='';
+
   constructor(private tutorialService: TutorialService) { 
     this.options=[{id:0,role:'--Choose--'},{id:1,role:'OPERATOR'}, {id:2, role:'ADMIN'}];
   }
-
+showSuccess() {
+    this.toasterMessage="User role changed successfully!";
+    var x= document.getElementById('snackbarSuccess');
+    x.className='show';
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+  }
+  showError() {
+    this.toasterMessage="Error while updating user role!";
+    var x =document.getElementById('snackbarError');
+    x.className='show';
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+  }
   ngOnInit() {
     this.retrieveTutorials();
     document.getElementById('popup').style.display='none';
@@ -42,6 +55,8 @@ onRoleChange(event) {
     if(el.username == this.chosenUsername)
     el.role = this.options.filter(x=>x.id==this.chosenRole)[0].role;
   });
+  this.showSuccess();
+
 }
 togglePopup(val) {
   this.chosenUsername = val;
@@ -56,22 +71,6 @@ togglePopup(val) {
     this.currentIndex = -1;
   }
 
-  setActiveTutorial(tutorial, index) {
-    this.currentTutorial = tutorial;
-    this.currentIndex = index;
-  }
-
-  removeAllTutorials() {
-    this.tutorialService.deleteAll()
-      .subscribe(
-        response => {
-          console.log(response);
-          this.refreshList();
-        },
-        error => {
-          console.log(error);
-        });
-  }
 
   // searchTitle() {
   //   this.tutorialService.findByTitle(this.title)

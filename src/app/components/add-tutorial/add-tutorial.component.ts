@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TutorialService } from 'src/app/services/tutorial.service';
-import swal from 'sweetalert2'; 
 
 @Component({
   selector: 'app-add-tutorial',
@@ -17,6 +16,8 @@ export class AddTutorialComponent implements OnInit {
   chosenUsername='';
   showpopup: boolean;
   chosenRole=0;
+  toasterMessage='';
+
   constructor(private tutorialService: TutorialService) { 
     this.options=[{id:0,role:'--Choose--'},{id:1,role:'OPERATOR'}, {id:2, role:'ADMIN'}];
   }
@@ -25,7 +26,18 @@ export class AddTutorialComponent implements OnInit {
     this.retrieveTutorials();
     document.getElementById('popup').style.display='none';
   }
-
+  showSuccess() {
+    this.toasterMessage="User deleted successfully!";
+    var x= document.getElementById('snackbarSuccess');
+    x.className='show';
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+  }
+  showError() {
+    this.toasterMessage="Error while deleting user!";
+    var x =document.getElementById('snackbarError');
+    x.className='show';
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+  }
   retrieveTutorials() {
     this.tutorialService.getAll()
       .subscribe(
@@ -46,28 +58,24 @@ onRoleChange(event) {
 }
 deleteUser(val) {
   this.chosenUsername = val;
-  swal.fire({  
-    title: 'Are you sure want to delete '+this.chosenUsername+' ?',  
-    text: 'You will not be able to recover this file!',  
-    icon: 'warning',  
-    showCancelButton: true,  
-    confirmButtonText: 'Confirm',  
-    cancelButtonText: 'Cancel'  
-  }).then((result) => {  
-    if (result.value) {  
-      this.tutorialService.tutorials=this.tutorials.filter(x=>x.username!=this.chosenUsername);
-      this.retrieveTutorials();
-    } else if (result.dismiss === swal.DismissReason.cancel) {  
-      
-    }  
-  })  
+  var modal = document.getElementById('id01');
+document.getElementById('id01').style.display='block';
 }
   refreshList() {
     this.retrieveTutorials();
     this.currentTutorial = null;
     this.currentIndex = -1;
   }
-
+cancelDelete()
+{
+  document.getElementById('id01').style.display='none';
+}
+confirmDelete()
+{
+  this.tutorials=this.tutorials.filter(x=>x.username!=this.chosenUsername);
+  document.getElementById('id01').style.display='none';
+  this.showSuccess();
+}
   setActiveTutorial(tutorial, index) {
     this.currentTutorial = tutorial;
     this.currentIndex = index;
