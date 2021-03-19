@@ -1,0 +1,14 @@
+
+tr:nth-child(even) {background-color: lightblue;} 
+
+td {
+  padding: 8px;
+}
+.header {
+  background-color: blue;
+}
+.table {
+  width: 460px;
+  position: absolute;
+  left:20%;
+}

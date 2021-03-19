@@ -1,0 +1,35 @@
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+  <body>
+  <div class="list row">
+  
+  <div class="col-md-6">
+    <table class="table">
+      <tr class="header">
+        <th>USERNAME</th>
+        <th>ROLE</th>
+        <th></th>
+      </tr>
+      <ng-container *ngFor="let tutorial of tutorials">
+        <tr>
+          <td>{{ tutorial.username }}</td>
+          <td>{{ tutorial.role }}</td>
+          <td><button class="btn btn-info popover__wrapper" (click)="deleteUser(tutorial.username)">DELETE</button></td>
+        </tr>
+    </ng-container>
+ </table>
+
+  </div>
+</div>
+  <div class="popover__content" id="popup">
+    <p class="popover__message">Choose new role</p>
+   <select [(ngModel)]="chosenRole">
+     <option *ngFor="let option of options" value="{{option.id}}">{{option.role}}</option>
+   </select><br>
+   <button (click)="onRoleChange()">Change</button>
+  </div>
+</body>
